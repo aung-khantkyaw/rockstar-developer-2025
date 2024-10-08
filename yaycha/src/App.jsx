@@ -1,41 +1,122 @@
-function Item({ content, name }) {
-  return (
-    <li
-      style={{
-        padding: 10,
-        borderBottom: "1px solid #ddd",
-      }}
-    >
-      {content} - <b>{name}</b>
-    </li>
-  );
-}
+// Chapter4 - React Form
 
-function List({ children }) {
-  return (
-    <ul
-      style={{
-        listStyle: "none",
-        padding: 0,
-        margin: 0,
-        border: "1px solid #ddd",
-        borderRadius: 8,
-        overflow: "hidden",
-      }}
-    >
-      {children}
-    </ul>
-  );
-}
+import List from "./List";
+import Item from "./Item";
+import { useContext, useState } from "react";
+import Form from "./Form";
+import { AppContext } from "./ThemedApp";
 
 export default function App() {
+  const { mode, setMode } = useContext(AppContext);
+
+  const [showForm, setShowForm] = useState(false);
+
+  const [data, setData] = useState([
+    { id: 1, content: "Hello", name: "Alice" },
+    { id: 2, content: "Hello", name: "Bob" },
+    { id: 3, content: "Hello", name: "Chris" },
+  ]);
+
+  const remove = (id) => {
+    setData(data.filter((item) => item.id !== id));
+  };
+
+  const add = (content, name) => {
+    const id = data[data.length - 1].id + 1;
+    setData([...data, { id, content, name }]);
+  };
   return (
-    <div style={{ maxWidth: 600, margin: "20px auto" }}>
-      <h1>Yaycha</h1>
-      <List>
-        <Item content="Hello, World" name="Alice" />
-        <Item content="React is fun." name="Bob" />
-      </List>
+    <div
+      style={{
+        minHeight: 1500,
+        background: mode === "dark" ? "black" : "white",
+        color: mode === "dark" ? "white" : "black",
+        paddingTop: 20,
+      }}
+    >
+      <div style={{ maxWidth: 600, margin: "0 auto" }}>
+        <h1
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          Yaycha
+          <div>
+            <button
+              onClick={() => setShowForm(!showForm)}
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: 50,
+                border: "0 none",
+                background: showForm ? "#dc3545" : "#0d6efd",
+                color: "white",
+              }}
+            >
+              {showForm ? "x" : "+"}
+            </button>
+            <button
+              onClick={() => setMode(mode === "dark" ? "light" : "dark")}
+              style={{
+                marginLeft: 8,
+                padding: "0 20px",
+                height: 32,
+                borderRadius: 32,
+                border: "0 none",
+                background: mode === "dark" ? "#333" : "#ddd",
+                color: mode === "dark" ? "white" : "black",
+              }}
+            >
+              {mode === "dark" ? "Light" : "Dark"}
+            </button>
+          </div>
+        </h1>
+
+        {showForm && <Form add={add} />}
+
+        <List>
+          {data.map((item) => {
+            return <Item key={item.id} item={item} remove={remove} />;
+          })}
+        </List>
+      </div>
     </div>
-  )
-};
+  );
+}
+
+// ################################################### //
+
+// Chapter5 - React Context Provider
+
+// import { createContext, useContext } from "react";
+
+// const AppContext = createContext();
+
+// export default function App() {
+//   return (
+//     <AppContext.Provider value="Yaycha">
+//       <Home />
+//     </AppContext.Provider>
+//   );
+// }
+
+// function Home() {
+//   return (
+//     <div>
+//       <Header />
+//       <Footer />
+//     </div>
+//   );
+// }
+
+// function Header() {
+//   const title = useContext(AppContext);
+//   return <h1>{title}</h1>;
+// }
+
+// function Footer() {
+//   const title = useContext(AppContext);
+//   return <footer>Copyright - {title}</footer>;
+// }
