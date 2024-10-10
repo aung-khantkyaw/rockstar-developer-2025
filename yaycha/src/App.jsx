@@ -157,107 +157,144 @@
 //     </Box>
 //   );
 // }
+// ################################################### //
+
+// Chapter7 - More Hooks
+
+import { useEffect, useMemo, useState } from "react";
+
+function expensive() {
+  console.log("Some expensive tasks");
+  return "data";
+}
+
+function getData() {
+  console.log("Getting data ...");
+  return "data";
+}
+
+export default function App() {
+  const [count, setCount] = useState(0);
+
+  const dataMemo = useMemo(() => {
+    return expensive();
+  }, []);
+
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    const items = getData();
+    setData(items);
+  }, []);
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Button</button>
+      <h1>Data : {data}</h1>
+    </div>
+  );
+}
 
 // ################################################### //
 
 // Chapter8 - React Router
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Link,
-  useNavigate,
-  useParams,
-  Outlet,
-} from "react-router-dom";
+// import {
+//   createBrowserRouter,
+//   RouterProvider,
+//   Link,
+//   useNavigate,
+//   useParams,
+//   Outlet,
+// } from "react-router-dom";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Template />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/contact",
-        element: <Contact />,
-      },
-      {
-        path: "/profile/:id",
-        element: <Profile />,
-      },
-    ],
-  },
-]);
-export default function App() {
-  return (
-    <>
-      {/* <Template /> */}
-      <RouterProvider router={router} />
-    </>
-  );
-}
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <Template />,
+//     children: [
+//       {
+//         path: "/",
+//         element: <Home />,
+//       },
+//       {
+//         path: "/about",
+//         element: <About />,
+//       },
+//       {
+//         path: "/contact",
+//         element: <Contact />,
+//       },
+//       {
+//         path: "/profile/:id",
+//         element: <Profile />,
+//       },
+//     ],
+//   },
+// ]);
+// export default function App() {
+//   return (
+//     <>
+//       {/* <Template /> */}
+//       <RouterProvider router={router} />
+//     </>
+//   );
+// }
 
-function Template() {
-  return (
-    <div>
-      <h1>App</h1>
-      <Outlet />
-    </div>
-  );
-}
+// function Template() {
+//   return (
+//     <div>
+//       <h1>App</h1>
+//       <Outlet />
+//     </div>
+//   );
+// }
 
-function Home() {
-  return (
-    <>
-      <Link to="/about">About</Link>
-      <Link to="/contact">Contact</Link>
-      <Link to="/profile">Profile</Link>
-      <h1>Home</h1>
-    </>
-  );
-}
-function About() {
-  const navigate = useNavigate();
-  return (
-    <>
-      <h1>About</h1>
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Go to Home
-      </button>
-    </>
-  );
-}
-function Contact() {
-  const navigate = useNavigate();
-  return (
-    <>
-      <h1>Contact</h1>
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Go to Home
-      </button>
-    </>
-  );
-}
-function Profile() {
-  const { id } = useParams();
-  return (
-    <>
-      <h1>Profile {id}</h1>
-    </>
-  );
-}
+// function Home() {
+//   return (
+//     <>
+//       <Link to="/about">About</Link>
+//       <Link to="/contact">Contact</Link>
+//       <Link to="/profile">Profile</Link>
+//       <h1>Home</h1>
+//     </>
+//   );
+// }
+// function About() {
+//   const navigate = useNavigate();
+//   return (
+//     <>
+//       <h1>About</h1>
+//       <button
+//         onClick={() => {
+//           navigate("/");
+//         }}
+//       >
+//         Go to Home
+//       </button>
+//     </>
+//   );
+// }
+// function Contact() {
+//   const navigate = useNavigate();
+//   return (
+//     <>
+//       <h1>Contact</h1>
+//       <button
+//         onClick={() => {
+//           navigate("/");
+//         }}
+//       >
+//         Go to Home
+//       </button>
+//     </>
+//   );
+// }
+// function Profile() {
+//   const { id } = useParams();
+//   return (
+//     <>
+//       <h1>Profile {id}</h1>
+//     </>
+//   );
+// }
