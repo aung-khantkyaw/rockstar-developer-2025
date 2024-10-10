@@ -125,35 +125,139 @@
 
 // Chapter6 - React UI Framework MUI
 
-import { useState } from "react";
-import { Box, Container } from "@mui/material";
-import Header from "./components/Header";
-import Form from "./components/Form";
-import Item from "./components/Item";
-import { useApp } from "./ThemedApp";
+// import { useState } from "react";
+// import { Box, Container } from "@mui/material";
+// import Header from "./components/Header";
+// import Form from "./components/Form";
+// import Item from "./components/Item";
+// import { useApp } from "./ThemedApp";
+// export default function App() {
+//   const { showForm } = useApp();
+//   const [data, setData] = useState([
+//     { id: 3, content: "Yay, interesting.", name: "Chris" },
+//     { id: 2, content: "React is fun.", name: "Bob" },
+//     { id: 1, content: "Hello, World!", name: "Alice" },
+//   ]);
+//   const remove = (id) => {
+//     setData(data.filter((item) => item.id !== id));
+//   };
+//   const add = (content, name) => {
+//     const id = data[0].id + 1;
+//     setData([{ id, content, name }, ...data]);
+//   };
+//   return (
+//     <Box>
+//       <Header />
+//       <Container maxWidth="sm" sx={{ mt: 4 }}>
+//         {showForm && <Form add={add} />}
+//         {data.map((item) => {
+//           return <Item key={item.id} item={item} remove={remove} />;
+//         })}
+//       </Container>
+//     </Box>
+//   );
+// }
+
+// ################################################### //
+
+// Chapter8 - React Router
+
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Link,
+  useNavigate,
+  useParams,
+  Outlet,
+} from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Template />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/profile/:id",
+        element: <Profile />,
+      },
+    ],
+  },
+]);
 export default function App() {
-  const { showForm } = useApp();
-  const [data, setData] = useState([
-    { id: 3, content: "Yay, interesting.", name: "Chris" },
-    { id: 2, content: "React is fun.", name: "Bob" },
-    { id: 1, content: "Hello, World!", name: "Alice" },
-  ]);
-  const remove = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
-  const add = (content, name) => {
-    const id = data[0].id + 1;
-    setData([{ id, content, name }, ...data]);
-  };
   return (
-    <Box>
-      <Header />
-      <Container maxWidth="sm" sx={{ mt: 4 }}>
-        {showForm && <Form add={add} />}
-        {data.map((item) => {
-          return <Item key={item.id} item={item} remove={remove} />;
-        })}
-      </Container>
-    </Box>
+    <>
+      {/* <Template /> */}
+      <RouterProvider router={router} />
+    </>
+  );
+}
+
+function Template() {
+  return (
+    <div>
+      <h1>App</h1>
+      <Outlet />
+    </div>
+  );
+}
+
+function Home() {
+  return (
+    <>
+      <Link to="/about">About</Link>
+      <Link to="/contact">Contact</Link>
+      <Link to="/profile">Profile</Link>
+      <h1>Home</h1>
+    </>
+  );
+}
+function About() {
+  const navigate = useNavigate();
+  return (
+    <>
+      <h1>About</h1>
+      <button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Go to Home
+      </button>
+    </>
+  );
+}
+function Contact() {
+  const navigate = useNavigate();
+  return (
+    <>
+      <h1>Contact</h1>
+      <button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Go to Home
+      </button>
+    </>
+  );
+}
+function Profile() {
+  const { id } = useParams();
+  return (
+    <>
+      <h1>Profile {id}</h1>
+    </>
   );
 }
