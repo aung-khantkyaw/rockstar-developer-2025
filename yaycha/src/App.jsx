@@ -161,39 +161,39 @@
 
 // Chapter7 - More Hooks
 
-import { useEffect, useMemo, useState } from "react";
+// import { useEffect, useMemo, useState } from "react";
 
-function expensive() {
-  console.log("Some expensive tasks");
-  return "data";
-}
+// function expensive() {
+//   console.log("Some expensive tasks");
+//   return "data";
+// }
 
-function getData() {
-  console.log("Getting data ...");
-  return "data";
-}
+// function getData() {
+//   console.log("Getting data ...");
+//   return "data";
+// }
 
-export default function App() {
-  const [count, setCount] = useState(0);
+// export default function App() {
+//   const [count, setCount] = useState(0);
 
-  const dataMemo = useMemo(() => {
-    return expensive();
-  }, []);
+//   const dataMemo = useMemo(() => {
+//     return expensive();
+//   }, []);
 
-  const [data, setData] = useState("");
+//   const [data, setData] = useState("");
 
-  useEffect(() => {
-    const items = getData();
-    setData(items);
-  }, []);
-  return (
-    <div>
-      <h1>Count: {count}</h1>
-      <button onClick={() => setCount(count + 1)}>Button</button>
-      <h1>Data : {data}</h1>
-    </div>
-  );
-}
+//   useEffect(() => {
+//     const items = getData();
+//     setData(items);
+//   }, []);
+//   return (
+//     <div>
+//       <h1>Count: {count}</h1>
+//       <button onClick={() => setCount(count + 1)}>Button</button>
+//       <h1>Data : {data}</h1>
+//     </div>
+//   );
+// }
 
 // ################################################### //
 
@@ -298,3 +298,4 @@ export default function App() {
 //     </>
 //   );
 // }
+
