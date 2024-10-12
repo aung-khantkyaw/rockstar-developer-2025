@@ -47,6 +47,7 @@
 import { useState, createContext, useContext, useMemo } from "react";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClientProvider, QueryClient } from "react-query";
 
 import { deepPurple, grey } from "@mui/material/colors";
 
@@ -63,6 +64,9 @@ const AppContext = createContext();
 export function useApp() {
   return useContext(AppContext);
 }
+
+//Chapter12 - React Query
+export const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -133,7 +137,10 @@ export default function ThemedApp() {
           setMode,
         }}
       >
-        <RouterProvider router={router} />
+        {/* Chapter12 - React Query */}
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
         <CssBaseline />
       </AppContext.Provider>
     </ThemeProvider>

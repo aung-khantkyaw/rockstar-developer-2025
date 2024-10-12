@@ -89,7 +89,8 @@ import { useNavigate } from "react-router-dom";
 
 import { green } from "@mui/material/colors";
 
-export default function Item({ item, remove, primary }) {
+import { formatRelative } from "date-fns";
+export default function Item({ item, remove, primary, comment }) {
   const navigate = useNavigate();
 
   return (
@@ -97,7 +98,10 @@ export default function Item({ item, remove, primary }) {
       {primary && <Box sx={{ height: 50, bgcolor: green[500] }} />}
 
       <CardContent
-        onClick={() => navigate("/comments/1")}
+        onClick={() => {
+          if (comment) return false;
+          navigate(`/comments/${item.id}`);
+        }}
         sx={{ cursor: "pointer" }}
       >
         <Box
@@ -117,7 +121,8 @@ export default function Item({ item, remove, primary }) {
           >
             <TimeIcon fontSize="10" color="success" />
             <Typography variant="caption" sx={{ color: green[500] }}>
-              A few second ago
+              {/* Chapter11 - React Router  */}
+              {formatRelative(item.created, new Date())}
             </Typography>
           </Box>
           <IconButton
@@ -143,7 +148,7 @@ export default function Item({ item, remove, primary }) {
           }}
         >
           <UserIcon fontSize="12" color="info" />
-          <Typography variant="caption">{item.name}</Typography>
+          <Typography variant="caption">{item.user.name}</Typography>
         </Box>
       </CardContent>
     </Card>
