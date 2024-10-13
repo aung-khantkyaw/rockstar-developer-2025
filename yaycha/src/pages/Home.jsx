@@ -7,6 +7,7 @@ import Item from "../components/Item";
 
 import { queryClient, useApp } from "../ThemedApp";
 import { useMutation, useQuery } from "react-query";
+import { auth } from "../../../yaycha-api/middlewares/auth";
 const api = import.meta.env.VITE_API;
 
 export default function Home() {
@@ -49,6 +50,14 @@ export default function Home() {
       },
     }
   );
+
+  const add = useMutation(async (content) => postPost(content), {
+    onSuccess: async (post) => {
+      await queryClient.cancelQueries("posts");
+      await queryClient.setQueryData("posts", (old) => [post, ...old]);
+      setGlobalMsg("A post added");
+    },
+  });
   const { showForm, setGlobalMsg } = useApp();
 
   //   const [data, setData] = useState([
@@ -82,7 +91,7 @@ export default function Home() {
 
   return (
     <Box>
-      {showForm && <Form add={add} />}
+      {showForm && auth && <Form add={add} />}
 
       {data.map((item) => {
         return <Item key={item.id} item={item} remove={remove.mutate} />;

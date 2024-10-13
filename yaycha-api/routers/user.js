@@ -2,6 +2,7 @@ const express = require("express");
 const router = express();
 const prisma = require("../prismaClient");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 router.get("/users", async (req, res) => {
   const data = await prisma.user.findMany({
@@ -32,6 +33,38 @@ router.post("/users", async (req, res) => {
   const user = await prisma.user.create({
     data: { name, username, password: hash, bio },
   });
+  res.json(user);
+});
+
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ msg: "username and password required" });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { username },
+  });
+
+  if (user) {
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (passwordMatch) {
+      // const token = jwt.sign(
+      //   { id: user.id, username: user.username },
+      //   process.env.JWT_SECRET,
+      //   { expiresIn: "1h" }
+      // );
+      const token = jwt.sign(user, process.env.JWT_SECRET);
+      return res.json({ token, user });
+    }
+  }
+
+  res.status(401).json({ msg: "incorrect username or password" });
+});
+
+router.get("/verify", auth, async (req, res) => {
+  const user = res.locals.user;
   res.json(user);
 });
 

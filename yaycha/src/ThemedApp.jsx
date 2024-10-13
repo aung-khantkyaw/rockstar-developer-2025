@@ -44,7 +44,7 @@
 
 // Chapter8 - React Router
 
-import { useState, createContext, useContext, useMemo } from "react";
+import { useState, createContext, useContext, useMemo, useEffect } from "react";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
@@ -58,6 +58,7 @@ import Register from "./pages/Register";
 import Likes from "./pages/Likes";
 import Profile from "./pages/Profile";
 import Comments from "./pages/Comments";
+import { fetchVerify } from "./libs/fetcher";
 
 const AppContext = createContext();
 
@@ -120,6 +121,12 @@ export default function ThemedApp() {
       },
     });
   }, [mode]);
+
+  useEffect(() => {
+    fetchVerify().then((user) => {
+      if (user) setAuth(user);
+    });
+  });
 
   return (
     <ThemeProvider theme={theme}>
