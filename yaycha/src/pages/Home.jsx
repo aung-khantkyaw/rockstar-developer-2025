@@ -7,7 +7,7 @@ import Item from "../components/Item";
 
 import { queryClient, useApp } from "../ThemedApp";
 import { useMutation, useQuery } from "react-query";
-import { auth } from "../../../yaycha-api/middlewares/auth";
+import { postPost } from "../libs/fetcher";
 const api = import.meta.env.VITE_API;
 
 export default function Home() {
@@ -58,7 +58,7 @@ export default function Home() {
       setGlobalMsg("A post added");
     },
   });
-  const { showForm, setGlobalMsg } = useApp();
+  const { showForm, setGlobalMsg, auth } = useApp();
 
   //   const [data, setData] = useState([
   //     { id: 3, content: "Yay, interesting.", name: "Chris" },
@@ -71,11 +71,11 @@ export default function Home() {
   //     setGlobalMsg("An item deleted");
   //   };
 
-  const add = (content, name) => {
-    const id = data[0].id + 1;
-    setData([{ id, content, name }, ...data]);
-    setGlobalMsg("An item added");
-  };
+  // const add = (content, name) => {
+  //   const id = data[0].id + 1;
+  //   setData([{ id, content, name }, ...data]);
+  //   setGlobalMsg("An item added");
+  // };
 
   if (isError) {
     return (

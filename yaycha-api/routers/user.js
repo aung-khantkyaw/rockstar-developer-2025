@@ -3,6 +3,7 @@ const router = express();
 const prisma = require("../prismaClient");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { auth } = require("../middlewares/auth");
 
 router.get("/users", async (req, res) => {
   const data = await prisma.user.findMany({
