@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { queryClient, useApp } from "../ThemedApp";
 import { useMutation, useQuery } from "react-query";
 import { useRef } from "react";
+import { postComment } from "../libs/fetcher";
 
 const api = import.meta.env.VITE_API;
 
@@ -73,54 +74,50 @@ export default function Comments() {
 
   return (
     <Box>
-			<Item
-				primary
-				item={data}
-				remove={removePost.mutate}
-			/>
-			{data.comments.map(comment => {
-				return (
-					<Item
-						comment
-						key={comment.id}
-						item={comment}
-						remove={removeComment.mutate}
-						owner={data.userId}
-					/>
-				);
-			})}
+      <Item primary item={data} remove={removePost.mutate} />
+      {data.comments.map((comment) => {
+        return (
+          <Item
+            comment
+            key={comment.id}
+            item={comment}
+            remove={removeComment.mutate}
+            owner={data.userId}
+          />
+        );
+      })}
 
-			{auth && (
-				<form
-					onSubmit={e => {
-						e.preventDefault();
-						const content = contentInput.current.value;
-						if (!content) return false;
+      {auth && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const content = contentInput.current.value;
+            if (!content) return false;
 
-						addComment.mutate(content);
+            addComment.mutate(content);
 
-						e.currentTarget.reset();
-					}}>
-					<Box
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-							gap: 1,
-							mt: 3,
-						}}>
-						<TextField
-							inputRef={contentInput}
-							multiline
-							placeholder="Your Comment"
-						/>
-						<Button
-							type="submit"
-							variant="contained">
-							Reply
-						</Button>
-					</Box>
-				</form>
-			)}
-		</Box>
-    )
+            e.currentTarget.reset();
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              mt: 3,
+            }}
+          >
+            <TextField
+              inputRef={contentInput}
+              multiline
+              placeholder="Your Comment"
+            />
+            <Button type="submit" variant="contained">
+              Reply
+            </Button>
+          </Box>
+        </form>
+      )}
+    </Box>
+  );
 }
