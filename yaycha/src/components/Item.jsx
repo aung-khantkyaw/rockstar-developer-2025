@@ -93,6 +93,8 @@ import { formatRelative } from "date-fns";
 
 import LikeButton from "./LikeButton";
 import CommentButton from "./CommentButton";
+
+import PropTypes from "prop-types";
 export default function Item({ item, remove, primary, comment }) {
   const navigate = useNavigate();
 
@@ -174,3 +176,10 @@ export default function Item({ item, remove, primary, comment }) {
     </Card>
   );
 }
+
+Item.propTypes = {
+  item: PropTypes.string.isRequired,
+  remove: PropTypes,
+  primary: PropTypes,
+  comment: PropTypes.string.isRequired,
+};
