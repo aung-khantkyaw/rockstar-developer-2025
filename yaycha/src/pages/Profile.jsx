@@ -3,6 +3,7 @@ import { pink } from "@mui/material/colors";
 import { useParams } from "react-router-dom";
 import { fetchUser } from "../libs/fetcher";
 import { useQuery } from "react-query";
+import FollowButton from "../components/FollowButton";
 export default function Profile() {
   const { id } = useParams();
   const { isLoading, isError, error, data } = useQuery(
@@ -48,9 +49,10 @@ export default function Profile() {
         />
         <Box sx={{ textAlign: "center" }}>
           <Typography>{data.name}</Typography>
-          <Typography sx={{ fontSize: "0.8em", color: "text.fade" }}>
+          <Typography sx={{ fontSize: "0.8em", color: "text.fade", mb: 2 }}>
             {data.bio}
           </Typography>
+          <FollowButton user={data} />
         </Box>
       </Box>
     </Box>
