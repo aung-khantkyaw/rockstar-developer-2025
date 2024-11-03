@@ -8,6 +8,7 @@ import {
   LightMode as LightModeIcon,
   DarkMode as DarkModeIcon,
   ArrowBack as BackIcon,
+  Search as SearchIcon,
 } from "@mui/icons-material";
 
 import { useLocation, useNavigate } from "react-router-dom";
@@ -44,6 +45,10 @@ export default function Header() {
         <Box>
           <IconButton color="inherit" onClick={() => setShowForm(!showForm)}>
             <AddIcon />
+          </IconButton>
+
+          <IconButton color="inherit" onClick={() => navigate("/search")}>
+            <SearchIcon />
           </IconButton>
 
           {mode === "dark" ? (

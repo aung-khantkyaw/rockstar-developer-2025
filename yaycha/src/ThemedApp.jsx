@@ -59,6 +59,7 @@ import Likes from "./pages/Likes";
 import Profile from "./pages/Profile";
 import Comments from "./pages/Comments";
 import { fetchVerify } from "./libs/fetcher";
+import Search from "./pages/Search";
 
 const AppContext = createContext();
 
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
       {
         path: "/likes/:id/:type",
         element: <Likes />,
+      },
+      {
+        path: "/search",
+        element: <Search />,
       },
     ],
   },
