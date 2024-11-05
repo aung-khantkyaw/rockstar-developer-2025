@@ -1,6 +1,13 @@
 import { useApp } from "../ThemedApp";
 
-import { Box, AppBar, Toolbar, Typography, IconButton } from "@mui/material";
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Badge,
+} from "@mui/material";
 
 import {
   Menu as MenuIcon,
@@ -9,15 +16,26 @@ import {
   DarkMode as DarkModeIcon,
   ArrowBack as BackIcon,
   Search as SearchIcon,
+  Notifications as NotiIcon,
 } from "@mui/icons-material";
 
 import { useLocation, useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { auth } from "../../../yaycha-api/middlewares/auth";
+import { fetchNotis } from "../libs/fetcher";
 
 export default function Header() {
   const { setShowDrawer, showForm, setShowForm, mode, setMode } = useApp();
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const { isLoading, isError, data } = useQuery(["notis", auth], fetchNotis);
+  function notiCount() {
+    if (!auth) return 0;
+    if (isLoading || isError) return 0;
+    return data.filter((noti) => !noti.read).length;
+  }
 
   return (
     <AppBar position="static">
@@ -46,6 +64,14 @@ export default function Header() {
           <IconButton color="inherit" onClick={() => setShowForm(!showForm)}>
             <AddIcon />
           </IconButton>
+
+          {auth && (
+            <IconButton color="inherit" onClick={() => navigate("/notis")}>
+              <Badge color="error" badgeContent={notiCount()}>
+                <NotiIcon />
+              </Badge>
+            </IconButton>
+          )}
 
           <IconButton color="inherit" onClick={() => navigate("/search")}>
             <SearchIcon />
