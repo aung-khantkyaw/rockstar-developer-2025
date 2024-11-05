@@ -21,19 +21,21 @@ import {
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { auth } from "../../../yaycha-api/middlewares/auth";
 import { fetchNotis } from "../libs/fetcher";
 
 export default function Header() {
-  const { setShowDrawer, showForm, setShowForm, mode, setMode } = useApp();
+  const { setShowDrawer, showForm, setShowForm, mode, setMode, auth } =
+    useApp();
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const { isLoading, isError, data } = useQuery(["notis", auth], fetchNotis);
+
   function notiCount() {
     if (!auth) return 0;
     if (isLoading || isError) return 0;
+
     return data.filter((noti) => !noti.read).length;
   }
 
@@ -49,20 +51,22 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
         ) : (
-          <IconButton
-            color="inherit"
-            edge="start"
-            onClick={() => navigate("/")}
-          >
+          <IconButton color="inherit" edge="start" onClick={() => navigate(-1)}>
             <BackIcon />
           </IconButton>
         )}
 
         <Typography sx={{ flexGrow: 1, ml: 2 }}>Yaycha</Typography>
 
-        <Box>
-          <IconButton color="inherit" onClick={() => setShowForm(!showForm)}>
-            <AddIcon />
+        <Box sx={{ display: "flex", gap: 1 }}>
+          {auth && (
+            <IconButton color="inherit" onClick={() => setShowForm(!showForm)}>
+              <AddIcon />
+            </IconButton>
+          )}
+
+          <IconButton color="inherit" onClick={() => navigate("/search")}>
+            <SearchIcon />
           </IconButton>
 
           {auth && (
@@ -72,10 +76,6 @@ export default function Header() {
               </Badge>
             </IconButton>
           )}
-
-          <IconButton color="inherit" onClick={() => navigate("/search")}>
-            <SearchIcon />
-          </IconButton>
 
           {mode === "dark" ? (
             <IconButton
